@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodapp/config/colors.dart';
+import 'package:foodapp/model/product_model.dart';
 import 'package:foodapp/model/review_cart_model.dart';
 import 'package:foodapp/providers/review_cart_provider.dart';
 import 'package:foodapp/widgets/single_item.dart';
 import 'package:provider/provider.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+class ReviewCart extends StatefulWidget {
+  @override
+  _ReviewCartState createState() => _ReviewCartState();
+}
 
-class ReviewCart extends StatelessWidget {
+class _ReviewCartState extends State<ReviewCart> {
   late ReviewCartProvider reviewCartProvider;
+
+  void initState() {
+    super.initState();
+    reviewCartProvider = Provider.of<ReviewCartProvider>(context, listen: false);
+    reviewCartProvider.getReviewCartData();
+  }
+
   showAlertDialog(BuildContext context, ReviewCartModel delete) {
     // set up the buttons
     Widget cancelButton = TextButton(
@@ -20,15 +32,15 @@ class ReviewCart extends StatelessWidget {
     Widget continueButton = TextButton(
       child: Text("Yes"),
       onPressed: () {
-        //reviewCartProvider.reviewCartDataDelete(delete.cartId);
+        reviewCartProvider.reviewCartDataDelete(delete.cartId);
         Navigator.of(context).pop();
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Cart Product"),
-      content: Text("Are you delete on cartProduct?"),
+      title: Text("ReviewCart Product"),
+      content: Text("Are you delete on ReviewCart Product?"),
       actions: [
         cancelButton,
         continueButton,
@@ -46,17 +58,17 @@ class ReviewCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reviewCartProvider = Provider.of<ReviewCartProvider>(context);
+    reviewCartProvider = Provider.of(context);
     reviewCartProvider.getReviewCartData();
     return Scaffold(
       bottomNavigationBar: ListTile(
         title: Text("Total Amount"),
-        // subtitle: Text(
-        //   "\$ ${reviewCartProvider.getTotalPrice()}",
-        //   style: TextStyle(
-        //     color: Colors.green[900],
-        //   ),
-        // ),
+        subtitle: Text(
+          "\$ ${reviewCartProvider.getTotalPrice()}",
+          style: TextStyle(
+            color: Colors.green[900],
+          ),
+        ),
         trailing: Container(
           width: 160,
           child: MaterialButton(
@@ -99,6 +111,7 @@ class ReviewCart extends StatelessWidget {
           reviewCartProvider.getReviewCartDataList[index];
           return Column(
             children: [
+
               SizedBox(
                 height: 10,
               ),
