@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/config/colors.dart';
-import 'package:foodapp/screens/product_overview/product_overview.dart';
+import 'package:foodapp/providers/user_provider.dart';
 import 'package:foodapp/screens/review_cart/review_cart.dart';
 import 'package:foodapp/screens/wishlist/wishlist.dart';
 import 'package:foodapp/welcome_slider/welcome.dart';
 
 import '../../auth/sign_in.dart';
 import '../my_profile/my_profile.dart';
-import 'homescreen.dart';
 
-class drawerSide extends StatelessWidget {
-  const drawerSide({super.key});
+class drawerSide extends StatefulWidget {
+  final UserProvider userProvider;
+  const drawerSide({required this.userProvider});
 
   @override
+  _drawerSideState createState() => _drawerSideState();
+}
+
+class _drawerSideState extends State<drawerSide> {
+ @override
   Widget build(BuildContext context) {
+
+  var userData = widget.userProvider.currentUserData;
+
     return Container(
       color: primaryColor,
       child: ListView(
@@ -21,7 +29,7 @@ class drawerSide extends StatelessWidget {
         children: <Widget>[
           Container(
             height: 100,
-            child: const DrawerHeader(
+            child: DrawerHeader(
               decoration: BoxDecoration(
                 // color: Color(0xffb0ad13),
               ),
@@ -33,33 +41,23 @@ class drawerSide extends StatelessWidget {
                     child: CircleAvatar(
                       radius: 40,
                       backgroundColor: Color(0xffb0ad13),
-                      child: Text(
-                        'Yum',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontFamily: 'Signatra',
-                          color: Colors.black,
-                          shadows: [
-                            BoxShadow(
-                              color: Color(0xffd6b738),
-                              blurRadius: 10,
-                              offset: Offset(3, 3),
-                            )
-                          ],
-                        ),
+                      backgroundImage: NetworkImage(
+                          userData?.userImage ??
+                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUA9IuDIQlQ4gfQAEBvKOLBgBUHtEKPqWirw&usqp=CAU",
                       ),
 
                     ),
                   ),
                   SizedBox(height: 20),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Text(userData.userName),
                       Text(
-                        'Welcome GUEST!',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        userData.userEmail,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 7),
                     ],
                   ),
                 ],
@@ -104,7 +102,7 @@ class drawerSide extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => MyProfile(),
+                  builder: (context) => MyProfile(userProvider: widget.userProvider,),
                 ),
               );
             },
