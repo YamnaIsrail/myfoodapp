@@ -36,13 +36,14 @@ dependencies:
   # Use with the CupertipubnoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   sign_in_button: ^3.2.0
-  # firebase_core: ^2.17.0
   firebase_auth: ^4.10.1
   cloud_firestore: ^4.9.3
   firebase_core: ^2.17.0
   provider: ^6.0.5
   google_sign_in: ^6.1.5
   fluttertoast: ^8.2.2
+  google_maps_flutter: ^2.5.0
+  location: ^5.0.3
 
 
 
@@ -73,7 +74,9 @@ flutter:
   assets:
     - assets/images/home2.jpg
     - assets/images/hatt.png
+    - assets/images/brown_bg.png
     - assets/images/
+
 
 
 
